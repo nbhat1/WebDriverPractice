@@ -17,7 +17,8 @@ public class DriverDemo {
 		driver = new FirefoxDriver();
 		String baseUrl = "http://www.google.com";
 		driver.get(baseUrl);
-		driver.close();
+		//driver.close();
+		System.out.println("Test");
 	}
 	
 	@Test
