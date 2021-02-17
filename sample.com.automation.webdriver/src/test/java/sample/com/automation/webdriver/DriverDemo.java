@@ -1,40 +1,63 @@
 package sample.com.automation.webdriver;
 
 import java.util.concurrent.TimeUnit;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.Test;
 
 public class DriverDemo {
+
+	public static WebDriver driver = null;
+	
+	public String browser = "edge"; //This value can come from notepad
 	
 	@Test
-	public void firefoxTest(){
-		WebDriver driver;
-		System.setProperty("webdriver.geco.driver", System.getProperty("user.dir")+"\\src\\main\\resources\\drivers\\gecodriver.exe");
-		driver = new FirefoxDriver();
-		String baseUrl = "http://www.google.com";
-		driver.get(baseUrl);
-		//driver.close();
-		System.out.println("Test");
+	public void chromeTest1() {
+		/*WebDriver manager is external dependency. It can be used to invoke driver.
+		 * Using this we don't need to keep drivers in root.*/
+		WebDriverManager.chromedriver().setup();
+		ChromeDriver driver = new ChromeDriver();
+		driver.get("http://google.com");
+		String pageTitle = driver.getTitle();
+		System.out.println(pageTitle);
 	}
 	
 	@Test
-	public void chromeTest(){
-		WebDriver driver = null;
-		System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"\\src\\main\\resources\\drivers\\chromedriver.exe");
-		String baseURL = "https://letskodeit.teachable.com/p/practice";
-		driver = new ChromeDriver();
-		driver.get(baseURL);
-	//Implicit wait
-		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-		driver.findElement(By.name("cars")).click();
-		driver.findElement(By.linkText("Login")).click();
-		driver.findElement(By.partialLinkText("Forgot"));
-	//driver.findElement(By.tagName(name))
-		driver.close();
+	public void chromeTest2() {
+		/*WebDriver manager is external dependency. It can be used to invoke driver.
+		 * Using this we don't need to keep drivers in root.*/
+		
+		if(browser.equalsIgnoreCase("firefox")) {
+			WebDriverManager.firefoxdriver().setup();;
+			driver = new FirefoxDriver();
+		} else if (browser.equalsIgnoreCase("chrome")) {
+			WebDriverManager.chromedriver().setup();
+			driver = new ChromeDriver();
+		} else if (browser.equalsIgnoreCase("edge")) {
+			WebDriverManager.edgedriver().setup();;
+			driver = new EdgeDriver();
+		} 
+		
+		driver.get("http://google.com");
+		String pageTitle = driver.getTitle();
+		System.out.println(pageTitle);
+	}
+	
+	@Test
+	public void chromeTestWithSwitch() {
+		/*WebDriver manager is external dependency. It can be used to invoke driver.
+		 * Using this we don't need to keep drivers in root.*/
+		
+		// Do above example with switch 
+		
+		driver.get("http://google.com");
+		String pageTitle = driver.getTitle();
+		System.out.println(pageTitle);
 	}
 
 }
